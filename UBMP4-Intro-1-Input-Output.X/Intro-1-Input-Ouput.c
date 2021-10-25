@@ -74,6 +74,18 @@ int main(void)
        } else if(SW4 != 0) {
            LED5 = 0;
        }
+	
+	if(SW3 == 0) {
+           LED4 = 1;
+       } else if(SW3 != 0) {
+           LED4 = 0;
+       }
+
+       if(SW5 == 0) {
+           LED6 = 1;
+       } else if(SW5 != 0) {
+           LED6 = 0;
+       }
 
 
         
