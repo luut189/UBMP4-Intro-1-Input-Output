@@ -75,7 +75,7 @@ int main(void)
            LED5 = 0;
        }
 	
-	if(SW3 == 0) {
+       if(SW3 == 0) {
            LED4 = 1;
        } else if(SW3 != 0) {
            LED4 = 0;
