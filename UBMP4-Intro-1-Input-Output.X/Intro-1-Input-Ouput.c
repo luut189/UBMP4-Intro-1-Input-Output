@@ -81,11 +81,11 @@ int main(void)
            LED4 = 0;
        }
 
-    //    if(SW5 == 0) {
-    //        LED6 = 1;
-    //    } else if(SW5 != 0) {
-    //        LED6 = 0;
-    //    }
+       if(SW5 == 0) {
+           LED6 = 1;
+       } else if(SW5 != 0) {
+           LED6 = 0;
+       }
 
 
         
