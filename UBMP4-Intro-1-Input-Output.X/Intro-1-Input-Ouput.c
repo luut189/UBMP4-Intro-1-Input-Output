@@ -167,13 +167,19 @@ int main(void)
         LED5 = 0;
 
  *    First, try pressing and releasing SW3 and SW4 one at a time.
+ *    Each button turns its assigned LED on.
  * 
  *    Next, press and hold SW3 while pressing and releasing SW4. Does it work
  *    as expected?
+ *    Yes, each button still turns its assigned LED on while being pressed.
  * 
  *    Next, try press and holding SW4 while pressing and releasing SW3. Does it
  *    work as expected? Explain the difference in operation between the 'if' and
  *    'while' structures making up the momentary button code.
+ *
+ *    The LED4 is not turned on when SW3 is pressed while holding SW4. When SW4 is pressed,
+ *    it will keep the condition for the 'while' loop true, so it keeps running the code inside the loop,
+ *    and not the code inside the 'if' structure.
  * 
  * 7. Let's explore logical conditions using 'if' statements. Replace the code
  *    added in 6, above, with this nested if code to make a logical AND
@@ -198,6 +204,7 @@ int main(void)
 
  *    Test the code to ensure it works as expected. Does the order of the if
  *    conditions matter? (eg. swap the conditional checks for SW3 and SW4)
+ *    The order of the if conditions don't matter because when I swap the SW3 to SW4 and vice versa, the code still works.
  * 
  * 8. Next, replace the code from 7 with the following code which implements a
  *    logical AND conditional operator composed of two ampersands '&&':
@@ -215,6 +222,8 @@ int main(void)
  *    Does '&&' work the same way as the nested if structures? Can you think of
  *    at least one advantage of using a logical conditional operator instead of
  *    nested if structures?
+ *    The '&&' work the same way as the nested if structures.
+ *    There is one obvious advantage that the code will be more impact using '&&' instead of the nested if structures.
  * 
  * 9. Replace the double ampersand '&&' with double vertical bars '||)' to make
  *    a logical OR conditional operator. Your code should look like this:
@@ -230,6 +239,7 @@ int main(void)
         }
 
  *    Describe the conditions under which LED4 turns on.
+ *    Either SW3 or SW4 is pressed, or both of them are pressed, LED4 turns on.
  * 
  * 
  * Programming Activities
