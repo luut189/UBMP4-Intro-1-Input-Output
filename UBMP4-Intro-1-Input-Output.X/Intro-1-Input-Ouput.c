@@ -29,7 +29,7 @@ int main(void)
     UBMP4_config();             // Configure on-board UBMP4 I/O devices
 	
     // Code in this while loop runs repeatedly.
-    int i;
+    char i;
     while(1)
 	{
 
