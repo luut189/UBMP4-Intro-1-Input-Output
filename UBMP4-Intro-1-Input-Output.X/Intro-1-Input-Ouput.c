@@ -30,18 +30,19 @@ int main(void)
 	
     // Code in this while loop runs repeatedly.
     char i;
+    unsigned char c;
     while(1)
 	{
 
        i = 0;
 
-       if(SW2 == 0) {
+       if(SW2 == 0 && SW3 != 0) {
            LED3 = 1;
-       } else if(SW3 != 0) {
+       } else if(SW2 != 0) {
            LED3 = 0;
        }
 	
-       if(SW3 == 0) {
+       if(SW3 == 0 && SW2 != 0) {
            LED4 = 1;
        } else if(SW3 != 0) {
            LED4 = 0;
@@ -59,39 +60,39 @@ int main(void)
            LED6 = 0;
        }
 
-       if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
-           LED4 = 1;
-           __delay_ms(100);
-           LED6 = 1;
-           __delay_ms(100);
-           LED4 = 0;
-           __delay_ms(100);
-           LED6 = 0;
-           __delay_ms(100);
-       }
+    //    if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
+    //        LED4 = 1;
+    //        __delay_ms(100);
+    //        LED6 = 1;
+    //        __delay_ms(100);
+    //        LED4 = 0;
+    //        __delay_ms(100);
+    //        LED6 = 0;
+    //        __delay_ms(100);
+    //    }
 
-       if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
-           i = 1;
-       }
+    //    if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
+    //        i = 1;
+    //    }
 
-       if(i == 1) {
-           LED3 = 1;
-           __delay_ms(100);
-           LED4 = 1;
-           __delay_ms(100);
-           LED5 = 1;
-           __delay_ms(100);
-           LED6 = 1;
-           __delay_ms(100);
-           LED3 = 0;
-           __delay_ms(100);
-           LED4 = 0;
-           __delay_ms(100);
-           LED5 = 0;
-           __delay_ms(100);
-           LED6 = 0;
-           __delay_ms(100);
-       }
+    //    if(i == 1) {
+    //        LED3 = 1;
+    //        __delay_ms(100);
+    //        LED4 = 1;
+    //        __delay_ms(100);
+    //        LED5 = 1;
+    //        __delay_ms(100);
+    //        LED6 = 1;
+    //        __delay_ms(100);
+    //        LED3 = 0;
+    //        __delay_ms(100);
+    //        LED4 = 0;
+    //        __delay_ms(100);
+    //        LED5 = 0;
+    //        __delay_ms(100);
+    //        LED6 = 0;
+    //        __delay_ms(100);
+    //    }
         
         // Add code for your Program Analysis and Programming Activities here:
         
@@ -108,6 +109,47 @@ int main(void)
         } else if(SW2 == 0) {
             BEEPER = !BEEPER;
             __delay_us(1012.391675); //B4
+        }
+
+        if(SW2 == 0 && SW3 == 0) {
+            LED3 = 0;
+            LED4 = 0;
+            
+            for(c = 250; c != 0; c--) {
+                BEEPER = !BEEPER;
+                __delay_us(1275.5);
+                LED6 = !LED6;
+            }
+            __delay_ms(50);
+            for(c = 250; c != 0; c--) {
+                BEEPER = !BEEPER;
+                __delay_us(1275.5);
+                LED6 = !LED6;
+            }
+            __delay_ms(200);
+            for(c = 250; c != 0; c--) {
+                BEEPER = !BEEPER;
+                __delay_us(1136.363635);
+                LED5 = !LED5;
+            }
+            __delay_ms(200);
+            for(c = 250; c != 0; c--) {
+                BEEPER = !BEEPER;
+                __delay_us(1275.5);
+                LED6 = !LED6;
+            }
+            __delay_ms(200);
+            for(c = 250; c != 0; c--) {
+                BEEPER = !BEEPER;
+                __delay_us(901.924705);
+                LED4 = !LED4;
+            }
+            __delay_ms(300);
+            for(c = 250; c != 0; c--) {
+                BEEPER = !BEEPER;
+                __delay_us(1012.391675);
+                LED3 = !LED3;
+            }
         }
 
         // Activate bootloader if SW1 is pressed.
