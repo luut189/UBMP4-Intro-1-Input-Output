@@ -95,6 +95,21 @@ int main(void)
         
         // Add code for your Program Analysis and Programming Activities here:
         
+        if(SW5 == 0)
+        {
+            BEEPER = !BEEPER;
+            __delay_us(1275.5); //G4
+        } else if(SW4 == 0) {
+            BEEPER = !BEEPER;
+            __delay_us(1136.363635); //A4
+        } else if(SW3 == 0) {
+            BEEPER = !BEEPER;
+            __delay_us(901.924705); //C5#
+        } else if(SW2 == 0) {
+            BEEPER = !BEEPER;
+            __delay_us(1012.391675); //B4
+        }
+
         // Activate bootloader if SW1 is pressed.
         if(SW1 == 0)
         {
