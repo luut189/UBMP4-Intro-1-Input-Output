@@ -103,6 +103,46 @@ void song(void) {
                 }
             }
 }
+
+void flashing() {
+    unsigned char i;
+
+    if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
+            LED4 = 1;
+            __delay_ms(100);
+            LED6 = 1;
+            __delay_ms(100);
+            LED4 = 0;
+            __delay_ms(100);
+            LED6 = 0;
+            __delay_ms(100);
+            }
+
+            if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
+                i = 1;
+            } else if(SW2 != 0 && SW3 != 0 && SW4 != 0 && SW5 != 0) {
+                i = 0;
+            }
+
+            if(i == 1) {
+                LED3 = 1;
+                __delay_ms(100);
+                LED4 = 1;
+                __delay_ms(100);
+                LED5 = 1;
+                __delay_ms(100);
+                LED6 = 1;
+                __delay_ms(100);
+                LED3 = 0;
+                __delay_ms(100);
+                LED4 = 0;
+                __delay_ms(100);
+                LED5 = 0;
+                __delay_ms(100);
+                LED6 = 0;
+                __delay_ms(100);
+            }
+}
 // The main function is required, and the program begins executing from here.
 
 int main(void)
@@ -112,7 +152,7 @@ int main(void)
     UBMP4_config();             // Configure on-board UBMP4 I/O devices
 	
     // Code in this while loop runs repeatedly.
-    char i;
+    unsigned char i;
     unsigned char c;
     unsigned char count;
     unsigned char mode = 0;
@@ -121,7 +161,7 @@ int main(void)
 
        i = 0;
 
-       if(SW3 == 0 && SW5 == 0) {
+       if(SW3 == 0 && SW5 == 0 && (SW2 != 0 && SW4 != 0)) {
            LED3 = !LED3;
            LED4 = 0;
            LED5 = !LED5;
@@ -169,39 +209,8 @@ int main(void)
        if(mode == 0) {
 
            regular();
-            if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
-            LED4 = 1;
-            __delay_ms(100);
-            LED6 = 1;
-            __delay_ms(100);
-            LED4 = 0;
-            __delay_ms(100);
-            LED6 = 0;
-            __delay_ms(100);
-            }
-
-            if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
-                i = 1;
-            }
-
-            if(i == 1) {
-                LED3 = 1;
-                __delay_ms(100);
-                LED4 = 1;
-                __delay_ms(100);
-                LED5 = 1;
-                __delay_ms(100);
-                LED6 = 1;
-                __delay_ms(100);
-                LED3 = 0;
-                __delay_ms(100);
-                LED4 = 0;
-                __delay_ms(100);
-                LED5 = 0;
-                __delay_ms(100);
-                LED6 = 0;
-                __delay_ms(100);
-            }
+           flashing();
+           
        } else if(mode == 1) {
            regular();
            song();
