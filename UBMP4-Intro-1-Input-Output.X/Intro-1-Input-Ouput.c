@@ -19,24 +19,8 @@
 
 // TODO Set linker ROM ranges to 'default,-0-7FF' under "Memory model" pull-down.
 // TODO Set linker code offset to '800' under "Additional options" pull-down.
-
-// The main function is required, and the program begins executing from here.
-
-int main(void)
-{
-    // Configure oscillator and I/O ports. These functions run once at start-up.
-    OSC_config();               // Configure internal oscillator for 48 MHz
-    UBMP4_config();             // Configure on-board UBMP4 I/O devices
-	
-    // Code in this while loop runs repeatedly.
-    char i;
-    unsigned char c;
-    while(1)
-	{
-
-       i = 0;
-
-       if(SW2 == 0 && SW3 != 0) {
+void regular(void) {
+    if(SW2 == 0 && SW3 != 0) {
            LED3 = 1;
        } else if(SW2 != 0) {
            LED3 = 0;
@@ -60,43 +44,7 @@ int main(void)
            LED6 = 0;
        }
 
-    //    if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
-    //        LED4 = 1;
-    //        __delay_ms(100);
-    //        LED6 = 1;
-    //        __delay_ms(100);
-    //        LED4 = 0;
-    //        __delay_ms(100);
-    //        LED6 = 0;
-    //        __delay_ms(100);
-    //    }
-
-    //    if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
-    //        i = 1;
-    //    }
-
-    //    if(i == 1) {
-    //        LED3 = 1;
-    //        __delay_ms(100);
-    //        LED4 = 1;
-    //        __delay_ms(100);
-    //        LED5 = 1;
-    //        __delay_ms(100);
-    //        LED6 = 1;
-    //        __delay_ms(100);
-    //        LED3 = 0;
-    //        __delay_ms(100);
-    //        LED4 = 0;
-    //        __delay_ms(100);
-    //        LED5 = 0;
-    //        __delay_ms(100);
-    //        LED6 = 0;
-    //        __delay_ms(100);
-    //    }
-        
-        // Add code for your Program Analysis and Programming Activities here:
-        
-        if(SW5 == 0)
+       if(SW5 == 0)
         {
             BEEPER = !BEEPER;
             __delay_us(1275.5); //G4
@@ -110,47 +58,159 @@ int main(void)
             BEEPER = !BEEPER;
             __delay_us(1012.391675); //B4
         }
+}
 
-        if(SW2 == 0 && SW3 == 0) {
-            LED3 = 0;
+void song(void) {
+    unsigned char c;
+    if(SW2 == 0 && SW3 == 0) {
+                LED3 = 0;
+                LED4 = 0;
+                
+                for(c = 250; c != 0; c--) {
+                    BEEPER = !BEEPER;
+                    __delay_us(1275.5);
+                    LED6 = !LED6;
+                }
+                __delay_ms(50);
+                for(c = 250; c != 0; c--) {
+                    BEEPER = !BEEPER;
+                    __delay_us(1275.5);
+                    LED6 = !LED6;
+                }
+                __delay_ms(200);
+                for(c = 250; c != 0; c--) {
+                    BEEPER = !BEEPER;
+                    __delay_us(1136.363635);
+                    LED5 = !LED5;
+                }
+                __delay_ms(200);
+                for(c = 250; c != 0; c--) {
+                    BEEPER = !BEEPER;
+                    __delay_us(1275.5);
+                    LED6 = !LED6;
+                }
+                __delay_ms(200);
+                for(c = 250; c != 0; c--) {
+                    BEEPER = !BEEPER;
+                    __delay_us(901.924705);
+                    LED4 = !LED4;
+                }
+                __delay_ms(300);
+                for(c = 250; c != 0; c--) {
+                    BEEPER = !BEEPER;
+                    __delay_us(1012.391675);
+                    LED3 = !LED3;
+                }
+            }
+}
+// The main function is required, and the program begins executing from here.
+
+int main(void)
+{
+    // Configure oscillator and I/O ports. These functions run once at start-up.
+    OSC_config();               // Configure internal oscillator for 48 MHz
+    UBMP4_config();             // Configure on-board UBMP4 I/O devices
+	
+    // Code in this while loop runs repeatedly.
+    char i;
+    unsigned char c;
+    unsigned char count;
+    unsigned char mode = 0;
+    while(1)
+	{
+
+       i = 0;
+
+       if(SW3 == 0 && SW5 == 0) {
+           LED3 = !LED3;
+           LED4 = 0;
+           LED5 = !LED5;
+           LED6 = 0;
+           __delay_ms(1000);
+           count++;
+       }
+
+       if(count > 3 && mode == 0) {
+           for(c = 250; c != 0; c--) {
+            BEEPER = !BEEPER;
+            __delay_us(1500);
+           }
+           
+           LED3 = 1;
+           LED4 = 1;
+           LED5 = 1;
+           LED6 = 1;
+           __delay_ms(500);
+           LED3 = 0;
+           LED5 = 0;
+           LED4 = 0;
+           LED6 = 0;
+           mode = 1;
+           count = 0; 
+       } else if(count > 3 && mode == 1) {
+           for(c = 250; c != 0; c--) {
+            BEEPER = !BEEPER;
+            __delay_us(1500);
+           }
+
+           LED3 = 1;
+           LED4 = 1;
+           LED5 = 1;
+           LED6 = 1;
+           __delay_ms(500);
+           LED3 = 0;
+           LED5 = 0;
+           LED4 = 0;
+           LED6 = 0;
+           mode = 0;
+           count = 0; 
+       }
+
+       if(mode == 0) {
+
+           regular();
+            if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
+            LED4 = 1;
+            __delay_ms(100);
+            LED6 = 1;
+            __delay_ms(100);
             LED4 = 0;
-            
-            for(c = 250; c != 0; c--) {
-                BEEPER = !BEEPER;
-                __delay_us(1275.5);
-                LED6 = !LED6;
+            __delay_ms(100);
+            LED6 = 0;
+            __delay_ms(100);
             }
-            __delay_ms(50);
-            for(c = 250; c != 0; c--) {
-                BEEPER = !BEEPER;
-                __delay_us(1275.5);
-                LED6 = !LED6;
+
+            if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
+                i = 1;
             }
-            __delay_ms(200);
-            for(c = 250; c != 0; c--) {
-                BEEPER = !BEEPER;
-                __delay_us(1136.363635);
-                LED5 = !LED5;
+
+            if(i == 1) {
+                LED3 = 1;
+                __delay_ms(100);
+                LED4 = 1;
+                __delay_ms(100);
+                LED5 = 1;
+                __delay_ms(100);
+                LED6 = 1;
+                __delay_ms(100);
+                LED3 = 0;
+                __delay_ms(100);
+                LED4 = 0;
+                __delay_ms(100);
+                LED5 = 0;
+                __delay_ms(100);
+                LED6 = 0;
+                __delay_ms(100);
             }
-            __delay_ms(200);
-            for(c = 250; c != 0; c--) {
-                BEEPER = !BEEPER;
-                __delay_us(1275.5);
-                LED6 = !LED6;
-            }
-            __delay_ms(200);
-            for(c = 250; c != 0; c--) {
-                BEEPER = !BEEPER;
-                __delay_us(901.924705);
-                LED4 = !LED4;
-            }
-            __delay_ms(300);
-            for(c = 250; c != 0; c--) {
-                BEEPER = !BEEPER;
-                __delay_us(1012.391675);
-                LED3 = !LED3;
-            }
-        }
+       } else if(mode == 1) {
+           regular();
+           song();
+           
+       }
+        
+        // Add code for your Program Analysis and Programming Activities here:
+        
+        
 
         // Activate bootloader if SW1 is pressed.
         if(SW1 == 0)
@@ -159,7 +219,6 @@ int main(void)
         }
     }
 }
-
 /* Program Analysis
  * 
  * 1. How many times do the LEDs flash if SW2 is quickly pressed and released?
