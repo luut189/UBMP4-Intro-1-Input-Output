@@ -22,7 +22,14 @@ unsigned char count; //counter
 unsigned char i; //used for flashing light
 unsigned char c; //used for notes
 unsigned char mode = 0; //used for changing mode
- 
+
+void bSound() {
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(119.445515);
+    }
+}
+
 void g4() {
    for(c = 250; c != 0; c--) {
        BEEPER = !BEEPER;
@@ -228,11 +235,7 @@ int main(void)
       counter();
  
       if(count > 3 && mode == 0) {
-          for(c = 250; c != 0; c--) {
-           BEEPER = !BEEPER;
-           __delay_us(1500);
-          }
-         
+          bSound();
           LED3 = 1;
           LED4 = 1;
           LED5 = 1;
@@ -245,11 +248,7 @@ int main(void)
           mode = 1;
           count = 0;
       } else if(count > 3 && mode == 1) {
-          for(c = 250; c != 0; c--) {
-           BEEPER = !BEEPER;
-           __delay_us(1500);
-          }
- 
+          bSound();
           LED3 = 1;
           LED4 = 1;
           LED5 = 1;
@@ -262,11 +261,7 @@ int main(void)
           mode = 2;
           count = 0;
       } else if(count > 3 && mode == 2) {
-          for(c = 250; c != 0; c--) {
-           BEEPER = !BEEPER;
-           __delay_us(1500);
-          }
- 
+          bSound();
           LED3 = 1;
           LED4 = 1;
           LED5 = 1;
@@ -281,14 +276,11 @@ int main(void)
       }
  
       if(mode == 0) {
- 
           regular();
           flashing1();
-         
       } else if(mode == 1) {
           regular();
           HPBD();
-         
       } else if(mode == 2) {
           regular();
           flashing2();
