@@ -18,15 +18,24 @@ and simulated start-stop button functionality.
 // TODO Set linker ROM ranges to 'default,-0-7FF' under "Memory model" pull-down.
 // TODO Set linker code offset to '800' under "Additional options" pull-down.
  
-unsigned char count; //counter
-unsigned char i; //used for flashing light
-unsigned char c; //used for notes
+unsigned char count; //counter for mode changing
+unsigned char count1; //counter for alert function
+unsigned char i; //used for flashing light functions
+unsigned char c; //used for note functions
+unsigned char a; //used for alert function
 unsigned char mode = 0; //used for changing mode
+
+void aSound() {
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(119.445515);
+    }
+}
 
 void bSound() {
     for(c = 250; c != 0; c--) {
         BEEPER = !BEEPER;
-        __delay_us(119.445515);
+        __delay_us(900);
     }
 }
 
@@ -63,6 +72,8 @@ void b4() {
 }
  
 void regular(void) {
+
+   //Light part
    if(SW2 == 0 && SW3 != 0 && SW5 != 0) {
           LED3 = 1;
       } else if(SW2 != 0) {
@@ -87,6 +98,7 @@ void regular(void) {
           LED6 = 0;
       }
 
+      //Multi light
       if(SW2 == 0 && SW4 == 0) {
           LED3 = 1;
           LED5 = 1;
@@ -94,18 +106,19 @@ void regular(void) {
           LED3 = 0;
           LED5 = 0;
       }
- 
-      if(SW5 == 0)
+
+      //BEEPER part
+      if(SW5 == 0 && SW2 != 0 && SW3 != 0 && SW4 != 0)
        {
            BEEPER = !BEEPER;
            __delay_us(1275.5); //G4
-       } else if(SW4 == 0) {
+       } else if(SW4 == 0 && SW2 != 0 && SW3 != 0 && SW5 != 0) {
            BEEPER = !BEEPER;
            __delay_us(1136.363635); //A4
-       } else if(SW3 == 0) {
+       } else if(SW3 == 0 && SW2 != 0 && SW4 != 0 && SW5 != 0) {
            BEEPER = !BEEPER;
            __delay_us(901.924705); //C5#
-       } else if(SW2 == 0) {
+       } else if(SW2 == 0 && SW3 != 0 && SW4 != 0 && SW5 != 0) {
            BEEPER = !BEEPER;
            __delay_us(1012.391675); //B4
        }
@@ -139,6 +152,7 @@ void flashing1() {
         LED3 = 1;
         LED5 = 1;
         
+        //flashing
         LED4 = 1;
         __delay_ms(100);
         LED6 = 1;
@@ -147,6 +161,12 @@ void flashing1() {
         __delay_ms(100);
         LED6 = 0;
         __delay_ms(100);
+
+        //make sound
+        BEEPER = !BEEPER;
+        __delay_us(1012.391675); //B4
+        BEEPER = !BEEPER;
+        __delay_us(1136.363635); //A4
     }
 
     if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
@@ -176,12 +196,14 @@ void flashing1() {
 }
 
 void flashing2() {
+    //Checking part
     if(SW2 == 0) {
         i = 1;
     } else if(SW3 == 0) {
         i = 0;
     }
 
+    //Pattern part
     if(i == 1) {
         LED3 = 1;
         __delay_ms(100);
@@ -204,24 +226,109 @@ void flashing2() {
         LED6 = 0;
     }
 }
+
+void alert() {
+    //Hold SW2
+    if(SW2 == 0) {
+        LED3 = 1;
+        __delay_ms(1000);
+        count1++;
+    }
+
+    //Press or Hold SW3
+    if(SW3 == 0) {
+        count1 = 0;
+    }
+    
+    //Alert part
+    if(count1 >= 5) {
+        b4();
+        LED3 = 1;
+        __delay_ms(100);
+        LED3 = 0;
+        __delay_ms(50);
+    }
+}
  
 void counter() {
    if(SW3 == 0 && SW5 == 0 && (SW2 != 0 && SW4 != 0)) {
-          LED3 = 1;
-          LED4 = 1;
-          LED5 = 1;
-          LED6 = 1;
-          __delay_ms(50);
           LED3 = 0;
           LED5 = 0;
           LED4 = 0;
           LED6 = 0;
-          __delay_ms(1000);
+
+          LED3 = 1;
+          __delay_ms(250);
+          LED3 = 0;
+          LED4 = 1;
+          __delay_ms(250);
+          LED4 = 0;
+          LED5 = 1;
+          __delay_ms(250);
+          LED5 = 0;
+          LED6 = 1;
+          __delay_ms(250);
+          LED6 = 0;
+          aSound();
           count++;
       }
 }
-// The main function is required, and the program begins executing from here.
- 
+
+void changeMode() {
+    //Change to mode 2
+    if(count >= 3 && mode == 0) {
+        bSound();
+        LED3 = 0;
+        LED4 = 1;
+        LED5 = 0;
+        LED6 = 0;
+        __delay_ms(1000);
+        LED4 = 0;
+        mode = 1;
+        count = 0;
+    }
+
+    //Change to mode 3
+    else if(count >= 3 && mode == 1) {
+        bSound();
+        LED3 = 0;
+        LED4 = 0;
+        LED5 = 1;
+        LED6 = 0;
+        __delay_ms(1000);
+        LED5 = 0;
+        mode = 2;
+        count = 0;
+    }
+    
+    //Change to mode 4
+    else if(count >= 3 && mode == 2) {
+        bSound();
+        LED3 = 0;
+        LED4 = 0;
+        LED5 = 0;
+        LED6 = 1;
+        __delay_ms(1000);
+        LED6 = 0;
+        mode = 3;
+        count = 0;
+    }
+    
+    //Change back to mode 1
+    else if(count >= 3 && mode == 3) {
+        bSound();
+        LED3 = 1;
+        LED4 = 0;
+        LED5 = 0;
+        LED6 = 0;
+        __delay_ms(1000);
+        LED4 = 1;
+        mode = 0;
+        count = 0;
+    }
+}
+
+// The main function is required, and the program begins executing from here. 
 int main(void)
 {
    // Configure oscillator and I/O ports. These functions run once at start-up.
@@ -233,47 +340,7 @@ int main(void)
     {
  
       counter();
- 
-      if(count > 3 && mode == 0) {
-          bSound();
-          LED3 = 1;
-          LED4 = 1;
-          LED5 = 1;
-          LED6 = 1;
-          __delay_ms(500);
-          LED3 = 0;
-          LED5 = 0;
-          LED4 = 0;
-          LED6 = 0;
-          mode = 1;
-          count = 0;
-      } else if(count > 3 && mode == 1) {
-          bSound();
-          LED3 = 1;
-          LED4 = 1;
-          LED5 = 1;
-          LED6 = 1;
-          __delay_ms(500);
-          LED3 = 0;
-          LED5 = 0;
-          LED4 = 0;
-          LED6 = 0;
-          mode = 2;
-          count = 0;
-      } else if(count > 3 && mode == 2) {
-          bSound();
-          LED3 = 1;
-          LED4 = 1;
-          LED5 = 1;
-          LED6 = 1;
-          __delay_ms(500);
-          LED3 = 0;
-          LED5 = 0;
-          LED4 = 0;
-          LED6 = 0;
-          mode = 0;
-          count = 0;
-      }
+      changeMode();
  
       if(mode == 0) {
           regular();
@@ -284,6 +351,9 @@ int main(void)
       } else if(mode == 2) {
           regular();
           flashing2();
+      } else if(mode == 3) {
+          regular();
+          alert();
       }
       
        // Add code for your Program Analysis and Programming Activities here:
@@ -293,6 +363,7 @@ int main(void)
        // Activate bootloader if SW1 is pressed.
        if(SW1 == 0)
        {
+           aSound();
            RESET();
        }
    }
