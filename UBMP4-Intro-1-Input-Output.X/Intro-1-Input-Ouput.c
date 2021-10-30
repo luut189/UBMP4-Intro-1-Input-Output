@@ -18,10 +18,10 @@ and simulated start-stop button functionality.
 // TODO Set linker ROM ranges to 'default,-0-7FF' under "Memory model" pull-down.
 // TODO Set linker code offset to '800' under "Additional options" pull-down.
  
-unsigned char count;
-unsigned char i;
-unsigned char c;
-unsigned char mode = 0;
+unsigned char count; //counter
+unsigned char i; //used for flashing light
+unsigned char c; //used for notes
+unsigned char mode = 0; //used for changing mode
  
 void g4() {
    for(c = 250; c != 0; c--) {
@@ -56,28 +56,36 @@ void b4() {
 }
  
 void regular(void) {
-   if(SW2 == 0 && SW3 != 0) {
+   if(SW2 == 0 && SW3 != 0 && SW5 != 0) {
           LED3 = 1;
       } else if(SW2 != 0) {
           LED3 = 0;
       }
     
-      if(SW3 == 0 && SW2 != 0) {
+      if(SW3 == 0 && SW2 != 0 && SW4 != 0 && SW5 != 0) {
           LED4 = 1;
       } else if(SW3 != 0) {
           LED4 = 0;
       }
  
-      if(SW4 == 0) {
+      if(SW4 == 0 && SW3 != 0 && SW5 != 0) {
           LED5 = 1;
       } else if(SW4 != 0) {
           LED5 = 0;
       }
  
-      if(SW5 == 0) {
+      if(SW5 == 0 && SW2 != 0 && SW3 != 0 && SW4 != 0) {
           LED6 = 1;
       } else if(SW5 != 0) {
           LED6 = 0;
+      }
+
+      if(SW2 == 0 && SW4 == 0) {
+          LED3 = 1;
+          LED5 = 1;
+      } else if(SW2 != 0 && SW4 != 0) {
+          LED3 = 0;
+          LED5 = 0;
       }
  
       if(SW5 == 0)
@@ -97,7 +105,6 @@ void regular(void) {
 }
  
 void HPBD(void) {
-   unsigned char c;
    if(SW2 == 0 && SW3 == 0) {
                LED3 = 0;
                LED4 = 0;
@@ -118,44 +125,77 @@ void HPBD(void) {
            }
 }
  
-void flashing() {
-   unsigned char i;
+void flashing1() {
+    i = 0;
  
    if(SW2 == 0 && SW4 == 0 && (SW3 != 0 && SW5 != 0)) {
-           LED4 = 1;
-           __delay_ms(100);
-           LED6 = 1;
-           __delay_ms(100);
-           LED4 = 0;
-           __delay_ms(100);
-           LED6 = 0;
-           __delay_ms(100);
-           }
- 
-           if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
-               i = 1;
-           } else if(SW2 != 0 && SW3 != 0 && SW4 != 0 && SW5 != 0) {
-               i = 0;
-           }
- 
-           if(i == 1) {
-               LED3 = 1;
-               __delay_ms(100);
-               LED4 = 1;
-               __delay_ms(100);
-               LED5 = 1;
-               __delay_ms(100);
-               LED6 = 1;
-               __delay_ms(100);
-               LED3 = 0;
-               __delay_ms(100);
-               LED4 = 0;
-               __delay_ms(100);
-               LED5 = 0;
-               __delay_ms(100);
-               LED6 = 0;
-               __delay_ms(100);
-           }
+        LED3 = 1;
+        LED5 = 1;
+        
+        LED4 = 1;
+        __delay_ms(100);
+        LED6 = 1;
+        __delay_ms(100);
+        LED4 = 0;
+        __delay_ms(100);
+        LED6 = 0;
+        __delay_ms(100);
+    }
+
+    if(SW2 == 0 && SW3 == 0 && SW4 == 0 && SW5 == 0) {
+        i = 1;
+    } else if(SW2 != 0 && SW3 != 0 && SW4 != 0 && SW5 != 0) {
+        i = 0;
+    }
+
+    if(i == 1) {
+        LED3 = 1;
+        __delay_ms(100);
+        LED4 = 1;
+        __delay_ms(100);
+        LED5 = 1;
+        __delay_ms(100);
+        LED6 = 1;
+        __delay_ms(100);
+        LED3 = 0;
+        __delay_ms(100);
+        LED4 = 0;
+        __delay_ms(100);
+        LED5 = 0;
+        __delay_ms(100);
+        LED6 = 0;
+        __delay_ms(100);
+    }
+}
+
+void flashing2() {
+    if(SW2 == 0) {
+        i = 1;
+    } else if(SW3 == 0) {
+        i = 0;
+    }
+
+    if(i == 1) {
+        LED3 = 1;
+        __delay_ms(100);
+        LED4 = 1;
+        LED6 = 1;
+        __delay_ms(100);
+        LED5 = 1;
+        __delay_ms(100);
+        LED3 = 0;
+        __delay_ms(100);
+        LED4 = 0;
+        LED6 = 0;
+        __delay_ms(100);
+        LED5 = 0;
+        __delay_ms(100);
+    } else if(i == 0) {
+        LED3 = 0;
+        LED4 = 0;
+        LED5 = 0;
+        LED6 = 0;
+    }
 }
  
 void counter() {
@@ -184,8 +224,6 @@ int main(void)
    // Code in this while loop runs repeatedly.
    while(1)
     {
- 
-      i = 0;
  
       counter();
  
@@ -221,6 +259,23 @@ int main(void)
           LED5 = 0;
           LED4 = 0;
           LED6 = 0;
+          mode = 2;
+          count = 0;
+      } else if(count > 3 && mode == 2) {
+          for(c = 250; c != 0; c--) {
+           BEEPER = !BEEPER;
+           __delay_us(1500);
+          }
+ 
+          LED3 = 1;
+          LED4 = 1;
+          LED5 = 1;
+          LED6 = 1;
+          __delay_ms(500);
+          LED3 = 0;
+          LED5 = 0;
+          LED4 = 0;
+          LED6 = 0;
           mode = 0;
           count = 0;
       }
@@ -228,12 +283,15 @@ int main(void)
       if(mode == 0) {
  
           regular();
-          flashing();
+          flashing1();
          
       } else if(mode == 1) {
           regular();
           HPBD();
          
+      } else if(mode == 2) {
+          regular();
+          flashing2();
       }
       
        // Add code for your Program Analysis and Programming Activities here:
