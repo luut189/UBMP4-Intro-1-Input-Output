@@ -328,12 +328,39 @@ void changeMode() {
     }
 }
 
+void checkMode() {
+    switch(mode) {
+        case 0:
+            LED3 = 1;
+            __delay_ms(1000);
+            LED3 = 0;
+            break;
+        case 1:
+            LED4 = 1;
+            __delay_ms(1000);
+            LED4 = 0;
+            break;
+        case 2:
+            LED5 = 1;
+            __delay_ms(1000);
+            LED5 = 0;
+            break;
+        case 3:
+            LED6 = 1;
+            __delay_ms(1000);
+            LED6 = 0;
+            break;
+    }
+}
+
 // The main function is required, and the program begins executing from here. 
 int main(void)
 {
    // Configure oscillator and I/O ports. These functions run once at start-up.
    OSC_config();               // Configure internal oscillator for 48 MHz
    UBMP4_config();             // Configure on-board UBMP4 I/O devices
+
+   checkMode();
     
    // Code in this while loop runs repeatedly.
    while(1)
@@ -342,25 +369,28 @@ int main(void)
       counter();
       changeMode();
  
-      if(mode == 0) {
-          regular();
-          flashing1();
-      } else if(mode == 1) {
-          regular();
-          HPBD();
-      } else if(mode == 2) {
-          regular();
-          flashing2();
-      } else if(mode == 3) {
-          regular();
-          alert();
-      }
+      switch(mode) {
+        case 0:
+            regular();
+            flashing1();
+            break;
+        case 1:
+            regular();
+            HPBD();
+            break;
+        case 2:
+            regular();
+            flashing2();
+            break;
+        case 3:
+            regular();
+            alert();
+            break;
+    }
       
        // Add code for your Program Analysis and Programming Activities here:
-      
-      
  
-       // Activate bootloader if SW1 is pressed.
+       // Activate bootloader and play a sound if SW1 is pressed.
        if(SW1 == 0)
        {
            aSound();
