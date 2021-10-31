@@ -71,7 +71,7 @@ void b4() {
    }
 }
  
-void regular(void) {
+void regular() {
 
    //Light part
    if(SW2 == 0 && SW3 != 0 && SW5 != 0) {
@@ -124,7 +124,7 @@ void regular(void) {
        }
 }
  
-void HPBD(void) {
+void HPBD() {
    if(SW2 == 0 && SW3 == 0) {
                LED3 = 0;
                LED4 = 0;
