@@ -39,6 +39,13 @@ void bSound() {
     }
 }
 
+void alertSound() {
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(284);
+    }
+}
+
 void g4() {
    for(c = 250; c != 0; c--) {
        BEEPER = !BEEPER;
@@ -242,7 +249,7 @@ void alert() {
     
     //Alert part
     if(count1 >= 5) {
-        b4();
+        alertSound();
         LED3 = 1;
         __delay_ms(100);
         LED3 = 0;
@@ -386,7 +393,7 @@ int main(void)
             regular();
             alert();
             break;
-    }
+      }
       
        // Add code for your Program Analysis and Programming Activities here:
  
