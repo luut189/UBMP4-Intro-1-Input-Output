@@ -19,6 +19,7 @@ and simulated start-stop button functionality.
 // TODO Set linker code offset to '800' under "Additional options" pull-down.
  
 unsigned char count; //counter for mode changing
+unsigned char countR; //counter for reverse mode changing
 unsigned char count1; //counter for alert function
 unsigned char i; //used for flashing light functions
 unsigned char c; //used for note functions
@@ -42,7 +43,17 @@ void bSound() {
 void alertSound() {
     for(c = 250; c != 0; c--) {
         BEEPER = !BEEPER;
-        __delay_us(284);
+        __delay_us(104.1666665);
+    }
+
+    LED3 = 1;
+    __delay_ms(100);
+    LED3 = 0;
+    __delay_ms(50);
+
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(128.205128);
     }
 }
 
@@ -250,10 +261,6 @@ void alert() {
     //Alert part
     if(count1 >= 5) {
         alertSound();
-        LED3 = 1;
-        __delay_ms(100);
-        LED3 = 0;
-        __delay_ms(50);
     }
 }
  
@@ -278,6 +285,30 @@ void counter() {
           LED6 = 0;
           aSound();
           count++;
+      }
+}
+
+void counterR() {
+   if(SW3 == 0 && SW4 == 0 && (SW5 != 0 && SW2 != 0)) {
+          LED3 = 0;
+          LED5 = 0;
+          LED4 = 0;
+          LED6 = 0;
+
+          LED5 = 1;
+          __delay_ms(250);
+          LED5 = 0;
+          LED4 = 1;
+          __delay_ms(250);
+          LED4 = 0;
+          LED3 = 1;
+          __delay_ms(250);
+          LED3 = 0;
+          LED6 = 1;
+          __delay_ms(250);
+          LED6 = 0;
+          aSound();
+          countR++;
       }
 }
 
@@ -335,6 +366,60 @@ void changeMode() {
     }
 }
 
+void changeModeReverse() {
+    //Change to mode 2
+    if(countR >= 3 && mode == 3) {
+        bSound();
+        LED3 = 0;
+        LED4 = 0;
+        LED5 = 1;
+        LED6 = 0;
+        __delay_ms(1000);
+        LED4 = 1;
+        mode = 2;
+        countR = 0;
+    }
+
+    //Change to mode 1
+    else if(countR >= 3 && mode == 2) {
+        bSound();
+        LED3 = 0;
+        LED4 = 1;
+        LED5 = 0;
+        LED6 = 0;
+        __delay_ms(1000);
+        LED6 = 0;
+        mode = 1;
+        countR = 0;
+    }
+    
+    //Change to mode 0
+    else if(countR >= 3 && mode == 1) {
+        bSound();
+        LED3 = 1;
+        LED4 = 0;
+        LED5 = 0;
+        LED6 = 0;
+        __delay_ms(1000);
+        LED5 = 0;
+        mode = 0;
+        countR = 0;
+    }
+    
+    //Change back to mode 3
+    else if(countR >= 3 && mode == 0) {
+        bSound();
+        LED3 = 0;
+        LED4 = 0;
+        LED5 = 0;
+        LED6 = 1;
+        __delay_ms(1000);
+        LED4 = 0;
+        mode = 3;
+        countR = 0;
+    }
+}
+
 void checkMode() {
     switch(mode) {
         case 0:
@@ -374,7 +459,9 @@ int main(void)
     {
  
       counter();
+      counterR();
       changeMode();
+      changeModeReverse();
  
       switch(mode) {
         case 0:
