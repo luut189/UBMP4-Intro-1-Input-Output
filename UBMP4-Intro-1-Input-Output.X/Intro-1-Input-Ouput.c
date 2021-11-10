@@ -421,6 +421,7 @@ void changeModeReverse() {
 }
 
 void checkMode() {
+    aSound();
     switch(mode) {
         case 0:
             LED3 = 1;
@@ -483,7 +484,7 @@ int main(void)
       }
       
        // Add code for your Program Analysis and Programming Activities here:
- 
+       
        // Activate bootloader and play a sound if SW1 is pressed.
        if(SW1 == 0)
        {
@@ -639,6 +640,7 @@ int main(void)
 *    Can the delay be made even longer? Try 1000 ms. How big can the delay be
 *    before MPLAB-X produces an error message? (Hint: can you think of a fast
 *    and efficient way of guessing an unknown number?)
+*    LIMIT: 4205
 *
 * 2. The '__delay_ms();' function only accepts integers as delay values. To
 *    make delays shorter than 1ms, specify a delay in microseconds using the
@@ -657,6 +659,7 @@ int main(void)
 *    Try changing the delay values in both of the __delay_us(); functions.
 *    Does the pitch of the tone increase or decrease if the delay value is
 *    made smaller?
+*    The smaller the delay, the higher the pitch.
 *
 * 3. This code demonstrates a more compact way of toggling the beeper output
 *    using a logical NOT operator '!'. Replace the code above, with this code:
@@ -672,6 +675,9 @@ int main(void)
 *    be in after this code runs? While one advantage of this method is smaller
 *    code, can you think of one or more disadvantages based on its output when
 *    the button is released?
+*    I think this will leave the output to ON (1). It is okay with the BEEPER
+*    but not with the LEDs.
+*    
 *
 * 4. Using modified versions of the original SW2 'if' structure, create a
 *    program that makes a unique LED flashing pattern for each pushbutton.
@@ -679,29 +685,37 @@ int main(void)
 *    Test each of your flashing patterns. Describe what happens when more than
 *    one button is held. Do all of the patterns try to flash the LEDs at the
 *    same time, or sequentially? Explain why this is.
+*    Just one pattern will be on at a time. Because when you press a button,
+*    it will go into a loop attach to that button.
 *
 * 5. Create a program that makes a different tone for each pushbutton.
 *
 *    Test each tone by pressing each button individually. Next, press two or
 *    more buttons at the same time. Describe what the tone waveform would look
 *    like when more than one button is held.
+*    The sound would be somewhat like a clicking sound, or maybe just a weird sound.
 *
 * 6. Use individual 'if' structures to simulate 'Start' and 'Stop' buttons for
 *    an industrial machine. LED D4 should turn on when SW3 is pressed, stay on
 *    even after SW3 is released, and turn off when SW4 is pressed. Test your
 *    program to make sure it works.
+*    It works
 *
 * 7. Running your program from 6, above, describe what happens when both SW3
 *    and SW4 are pressed. Does LED D4 stay on? If so, how does the brightness
 *    of LED D4 compare between its normal on state following SW3 being pressed
 *    to this new state when both SW3 and SW4 are bing held? Can you explain
 *    why it changes?
+*    When we do that, the LED4 will stay on but with very low brightness.
+*    Because it run through two loops so quickly that the LED4 turn on and turn off rapidly.
 *
 * 8. As you can imagine, an industrial machine that is able to turn on even
 *    while its 'Stop' button is pressed represents a significant safety hazard.
 *    Using a logical conditional operator, modify the start-stop program from
 *    activity 5 to make it safer. SW3 should only turn on LED D4 if SW4 is
 *    released.
+*    I had that in the regular() function. It won't play sound when there are multiple
+*    buttons being pressed. It will only play individual sound that is assigned to each button.
 *
 * 9. LED D1 is normally used to indicate that a program is running, but it can
 *    be controlled by your program as well. If you take a look at the UBMP4
