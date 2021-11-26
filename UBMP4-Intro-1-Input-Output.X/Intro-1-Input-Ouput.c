@@ -88,6 +88,49 @@ void b4() {
        LED3 = !LED3;
    }
 }
+
+void e6() {
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(379.215933);
+    }
+}
+
+void noteA() {
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(284.090909);
+    }
+}
+
+void cs() {
+    for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(225.4832105);
+    }
+}
+
+void e() {
+   for(c = 250; c != 0; c--) {
+        BEEPER = !BEEPER;
+        __delay_us(189.6079665);
+    } 
+}
+
+void simonGame() {
+    if(SW2 == 0) {
+        e6();
+    }
+    if(SW3 == 0) {
+        noteA();
+    }
+    if(SW4 == 0) {
+        cs();
+    }
+    if(SW5 == 0) {
+        e();
+    }
+}
  
 void regular() {
 
@@ -466,7 +509,7 @@ int main(void)
  
       switch(mode) {
         case 0:
-            regular();
+            simonGame();
             flashing1();
             break;
         case 1:
