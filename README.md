@@ -12,7 +12,8 @@ All of the modes above also have some basic functions:
   - Each pushbuttons will light up the LED next to itself and play a note accordingly.
 # How to switch mode and how to use each mode?
 Mode switching:
-  - Press and hold SW3 and SW5 simultaneously for 3 seconds (or 3 light circles) to change mode.
+  - Press and hold SW3 and SW5 simultaneously for 3 seconds (or 3 light circles) to change to the next mode.
+  - Press and hold SW3 and SW5 simultaneously for 3 seconds (or 3 light circles) to change to the previous mode.
 
 Light pattern mode:
   - Press and hold SW2 and SW4 simultaneously to make a flashing light pattern with LED4 and LED6.
