@@ -489,6 +489,34 @@ void checkMode() {
     }
 }
 
+void doStuff() {
+    switch(mode) {
+        case 0:
+            regular();
+            flashing1();
+            break;
+        case 1:
+            regular();
+            HPBD();
+            break;
+        case 2:
+            regular();
+            flashing2();
+            break;
+        case 3:
+            regular();
+            alert();
+            break;
+    }
+}
+
+void resetFunc() {
+    if(SW1 == 0) {
+        aSound();
+        RESET();
+    }
+}
+
 // The main function is required, and the program begins executing from here. 
 int main(void)
 {
@@ -507,33 +535,12 @@ int main(void)
       changeMode();
       changeModeReverse();
  
-      switch(mode) {
-        case 0:
-            simonGame();
-            flashing1();
-            break;
-        case 1:
-            regular();
-            HPBD();
-            break;
-        case 2:
-            regular();
-            flashing2();
-            break;
-        case 3:
-            regular();
-            alert();
-            break;
-      }
+      doStuff();
       
        // Add code for your Program Analysis and Programming Activities here:
        
        // Activate bootloader and play a sound if SW1 is pressed.
-       if(SW1 == 0)
-       {
-           aSound();
-           RESET();
-       }
+       resetFunc();
    }
 }
 /* Program Analysis
