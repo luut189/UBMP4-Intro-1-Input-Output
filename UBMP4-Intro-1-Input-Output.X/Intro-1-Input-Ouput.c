@@ -773,6 +773,7 @@ int main(void)
 *    connected to the microcontroller instead of the anode (positive) pin as
 *    with the other LEDs. This means that you need to make D1's output a zero
 *    to turn D1 on. Try it! Make a program that controls or flashes LED D1.
+*    Instead of using LED1 = 1 to turn on the LED, I used LED1 = 0 to turn it on.
 */
  
 
